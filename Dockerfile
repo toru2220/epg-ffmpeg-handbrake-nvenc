@@ -19,10 +19,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt -y install nodejs && \
     apt install -y $RUNTIME && \
     apt purge -y wget gcc g++ make
-    
-COPY --from=l3tnun/epgstation:master-debian /app /app/
-COPY --from=l3tnun/epgstation:master-debian /app/client /app/client/
-COPY --from=ffmpeg-build /ffmpeg /usr/local/
+
 COPY config/ /app/config
 RUN chmod 444 /app/src -R
 
