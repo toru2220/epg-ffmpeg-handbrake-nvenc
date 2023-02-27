@@ -1,14 +1,14 @@
 # handbrake
-FROM jrottenberg/ffmpeg:5.1.2-nvidia2004 AS handbrake
+# FROM jrottenberg/ffmpeg:5.1.2-nvidia2004 AS handbrake
 
-WORKDIR /tmp
+# WORKDIR /tmp
 
-RUN apt update && \
-    apt install -y autoconf automake autopoint appstream build-essential cmake git libass-dev libbz2-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjansson-dev liblzma-dev libmp3lame-dev libnuma-dev libogg-dev libopus-dev libsamplerate-dev libspeex-dev libtheora-dev libtool libtool-bin libturbojpeg0-dev libvorbis-dev libx264-dev libxml2-dev libvpx-dev m4 make meson nasm ninja-build patch pkg-config tar zlib1g-dev clang
+# RUN apt update && \
+#     apt install -y autoconf automake autopoint appstream build-essential cmake git libass-dev libbz2-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjansson-dev liblzma-dev libmp3lame-dev libnuma-dev libogg-dev libopus-dev libsamplerate-dev libspeex-dev libtheora-dev libtool libtool-bin libturbojpeg0-dev libvorbis-dev libx264-dev libxml2-dev libvpx-dev m4 make meson nasm ninja-build patch pkg-config tar zlib1g-dev clang
 
-RUN git clone https://github.com/HandBrake/HandBrake.git && cd HandBrake && \
-    ./configure --launch-jobs=$(nproc) --launch --disable-gtk && \
-    make --directory=build install
+# RUN git clone https://github.com/HandBrake/HandBrake.git && cd HandBrake && \
+#     ./configure --enable-nvenc --launch-jobs=$(nproc) --launch --disable-gtk && \
+#     make --directory=build install
 
 FROM jrottenberg/ffmpeg:5.1.2-nvidia2004
 
@@ -26,9 +26,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 COPY --from=l3tnun/epgstation:master-debian /app /app/
 COPY --from=l3tnun/epgstation:master-debian /app/client /app/client/
-COPY --from=handbrake /tmp/HandBrake/build/ /usr/local/bin/
+# COPY --from=handbrake /tmp/HandBrake/build/ /usr/local/bin/
 COPY config/ /app/config
 RUN chmod 444 /app/src -R
+
+RUN apt update && \
+    apt install -y autoconf automake autopoint appstream build-essential cmake git libass-dev libbz2-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjansson-dev liblzma-dev libmp3lame-dev libnuma-dev libogg-dev libopus-dev libsamplerate-dev libspeex-dev libtheora-dev libtool libtool-bin libturbojpeg0-dev libvorbis-dev libx264-dev libxml2-dev libvpx-dev m4 make meson nasm ninja-build patch pkg-config tar zlib1g-dev clang
+
+RUN git clone https://github.com/HandBrake/HandBrake.git && cd HandBrake && \
+    ./configure --enable-nvenc --launch-jobs=$(nproc) --launch --disable-gtk && \
+    make --directory=build install
 
 # dry run
 RUN ffmpeg -codecs 
