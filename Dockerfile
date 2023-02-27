@@ -24,6 +24,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 COPY --from=l3tnun/epgstation:master-debian /app /app/
 COPY --from=l3tnun/epgstation:master-debian /app/client /app/client/
+COPY --from=handbrake /usr/local /usr/local/
 COPY config/ /app/config
 RUN chmod 444 /app/src -R
 
