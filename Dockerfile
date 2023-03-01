@@ -37,9 +37,14 @@ RUN chmod 444 /app/src -R
 #     ./configure --enable-nvenc --launch-jobs=$(nproc) --launch --disable-gtk && \
 #     make --directory=build install
 
-RUN mkdir /script
+RUN mkdir -p /script
+RUN mkdir -p /patched-lib
 COPY ffmpeg.sh /script
 COPY handbrake.sh /script
+COPY docker-entrypoint.sh ./
+COPY patch.sh /usr/local/bin/
+
+RUN chmod +x /usr/loca/bin/patch.sh docker-entrypoint.sh /script/*.sh
 
 # dry run
 RUN ffmpeg -codecs 
@@ -48,10 +53,6 @@ RUN HandBrakeCLI --help
 EXPOSE 8888 8889
 WORKDIR /app
 
-RUN mkdir -p /patched-lib
-COPY docker-entrypoint.sh ./
-COPY patch.sh /usr/local/bin
-RUN chmod +x /usr/loca/bin/patch.sh docker-entrypoint.sh /script/*.sh
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
 
