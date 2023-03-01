@@ -37,6 +37,10 @@ RUN chmod 444 /app/src -R
 #     ./configure --enable-nvenc --launch-jobs=$(nproc) --launch --disable-gtk && \
 #     make --directory=build install
 
+RUN mkdir /script
+COPY ffmpeg.sh /script
+COPY handbrake.sh /script
+RUN chmod +x /script/*.sh
 # dry run
 RUN ffmpeg -codecs 
 RUN HandBrakeCLI --help
