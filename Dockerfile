@@ -46,7 +46,7 @@ RUN ffmpeg -codecs
 RUN HandBrakeCLI --help
 
 LABEL maintainer="maleicacid"
-EXPOSE 8888
+EXPOSE 8888 8889
 WORKDIR /app
 ENTRYPOINT ["npm"]
 CMD ["start"]
