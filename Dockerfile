@@ -54,8 +54,8 @@ RUN HandBrakeCLI --help
 EXPOSE 8888 8889
 WORKDIR /app
 
-COPY docker-entrypoint.sh ./
-RUN chmod +x docker-entrypoint.sh
+COPY docker-entrypoint.sh /app/
+RUN chmod +x /app/docker-entrypoint.sh
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
 
