@@ -49,7 +49,8 @@ EXPOSE 8888 8889
 WORKDIR /app
 
 RUN mkdir -p /patched-lib
-COPY patch.sh docker-entrypoint.sh ./
+COPY docker-entrypoint.sh ./
+COPY patch.sh /usr/local/bin
 RUN chmod +x patch.sh docker-entrypoint.sh /script/*.sh
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
