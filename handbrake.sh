@@ -39,27 +39,27 @@ OUTPUT_DIR=${OUTPUT_DIR_DEFAULT:-"/data/dlna"}
   fi
   
   echo HandBrakeCLI -i "${file}" -t ${titleid} -b ${MAX_BITRATE} -X ${MAX_HEIGHT} ${ENCODE_OPT} -o "${destfile}"
-#   HandBrakeCLI -i "${file}" -t ${titleid} -b ${MAX_BITRATE} -X ${MAX_HEIGHT} ${ENCODE_OPT} -o "${destfile}"
+  HandBrakeCLI -i "${file}" -t ${titleid} -b ${MAX_BITRATE} -X ${MAX_HEIGHT} ${ENCODE_OPT} -o "${destfile}"
 
   title_count=$((title_count+1))
 
  done
 
-#  if [ ${max_titles} != ${title_count} ]; then
-#   echo "encode uncompleted. please delete fragment file manually."
-#   exit 0
-#  fi
+ if [ ${max_titles} != ${title_count} ]; then
+  echo "encode uncompleted. please delete fragment file manually."
+  exit 0
+ fi
  
-#  echo "encode result"
-#  echo `ls -l "${file}"`
-#  echo `ls -l "${destfile}"`
+ echo "encode result"
+ echo `ls -l "${file}"`
+ echo `ls -l "${destfile}"`
 
-#  if [ 0 = ${KEEP_FILE} ]; then
-#   echo "delete original file:${file}"
-#   rm -f "${file}"
-#  fi
+ if [ 0 = ${KEEP_FILE} ]; then
+  echo "delete original file:${file}"
+  rm -f "${file}"
+ fi
 
-#  if [ ! -s "${destfile}" ]; then
-#   echo "file is empty. deleted."
-#   rm -f "${destfile}"
-#  fi
+ if [ ! -s "${destfile}" ]; then
+  echo "file is empty. deleted."
+  rm -f "${destfile}"
+ fi

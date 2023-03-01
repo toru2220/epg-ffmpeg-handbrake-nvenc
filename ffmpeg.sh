@@ -39,31 +39,31 @@ echo ${height} to ${maxheight}
 echo ${bitrate} to ${maxbitrate}
 echo ffmpeg -i "${file}" "${ENCODE_OPT}" -maxrate ${maxbitrate} -vf scale=-1:${maxheight} "${destfile}"
 
-#  ffmpeg -i "${file}" ${ENCODE_OPT} -maxrate ${maxbitrate} -vf scale=-1:${maxheight} "${destfile}"
+ ffmpeg -i "${file}" ${ENCODE_OPT} -maxrate ${maxbitrate} -vf scale=-1:${maxheight} "${destfile}"
 
-#  duration_base=`ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${file}"`
-#  duration_dest=`ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${destfile}"`
+ duration_base=`ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${file}"`
+ duration_dest=`ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${destfile}"`
 
-#  duration_base_sec=(${duration_base//./ })
-#  duration_dest_sec=(${duration_dest//./ })
+ duration_base_sec=(${duration_base//./ })
+ duration_dest_sec=(${duration_dest//./ })
 
-#  if [ "${duration_base_sec}" != "${duration_dest_sec}" ]; then
-#   echo "encode uncompleted. delete fragment file:${destfile}"
-#   rm -f "${destfile}"
-#   continue
-#  fi
+ if [ "${duration_base_sec}" != "${duration_dest_sec}" ]; then
+  echo "encode uncompleted. delete fragment file:${destfile}"
+  rm -f "${destfile}"
+  exit 0
+ fi
 
-#  echo "encode result"
-#  echo `ls -l "${file}"`
-#  echo `ls -l "${destfile}"`
+ echo "encode result"
+ echo `ls -lh "${file}"`
+ echo `ls -lh "${destfile}"`
 
-#  if [ 0 = ${KEEP_FILE} ]; then
-#   echo "delete original file:${file}"
-#   rm "${file}"
-#  fi
+ if [ 0 = ${KEEP_FILE} ]; then
+  echo "delete original file:${file}"
+  rm "${file}"
+ fi
 
-#  if [ ! -s "${destfile}" ]; then
-#   echo "file is empty. deleted."
-#   rm -f "${destfile}"
-#  fi
+ if [ ! -s "${destfile}" ]; then
+  echo "file is empty. deleted."
+  rm -f "${destfile}"
+ fi
 
