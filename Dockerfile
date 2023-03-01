@@ -44,7 +44,10 @@ COPY handbrake.sh /script
 COPY docker-entrypoint.sh ./
 COPY patch.sh /usr/local/bin/
 
-RUN chmod +x /usr/loca/bin/patch.sh docker-entrypoint.sh /script/*.sh
+RUN chmod +x /usr/loca/bin/patch.sh 
+RUN chmod +x docker-entrypoint.sh
+RUN chmod +x /script/ffmpeg.sh
+RUN chmod +x /script/handbrake.sh
 
 # dry run
 RUN ffmpeg -codecs 
