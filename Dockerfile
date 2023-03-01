@@ -40,14 +40,17 @@ RUN chmod 444 /app/src -R
 RUN mkdir /script
 COPY ffmpeg.sh /script
 COPY handbrake.sh /script
-RUN chmod +x /script/*.sh
+
 # dry run
 RUN ffmpeg -codecs 
 RUN HandBrakeCLI --help
 
-LABEL maintainer="maleicacid"
 EXPOSE 8888 8889
 WORKDIR /app
-ENTRYPOINT ["npm"]
-CMD ["start"]
+
+RUN mkdir -p /patched-lib
+COPY patch.sh docker-entrypoint.sh ./
+RUN chmod +x patch.sh docker-entrypoint.sh /script/*.sh
+
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 
