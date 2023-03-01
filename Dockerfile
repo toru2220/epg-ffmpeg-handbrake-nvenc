@@ -52,6 +52,7 @@ RUN mkdir -p /patched-lib
 COPY docker-entrypoint.sh ./
 COPY patch.sh /usr/local/bin
 RUN chmod +x patch.sh docker-entrypoint.sh /script/*.sh
+RUN chmod +x /usr/loca/bin/patch.sh docker-entrypoint.sh /script/*.sh
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
 
