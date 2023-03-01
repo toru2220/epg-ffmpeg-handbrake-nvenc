@@ -1,5 +1,6 @@
 # handbrake
-FROM jrottenberg/ffmpeg:5.1.2-nvidia2004 AS handbrake
+# FROM jrottenberg/ffmpeg:5.1.2-nvidia2004 AS handbrake
+FROM nvidia/cuda:11.4.2-devel-ubuntu20.04 AS handbrake
 
 WORKDIR /tmp
 
@@ -10,7 +11,8 @@ RUN git clone https://github.com/HandBrake/HandBrake.git && cd HandBrake && \
     ./configure --enable-nvenc --launch-jobs=$(nproc) --launch --disable-gtk && \
     make --directory=build install
 
-FROM jrottenberg/ffmpeg:5.1.2-nvidia2004
+# FROM jrottenberg/ffmpeg:5.1.2-nvidia2004
+FROM nvidia/cuda:11.4.2-devel-ubuntu20.04
 
 ENV NODE_VERSION 16
 ENV DEBIAN_FRONTEND=noninteractive
