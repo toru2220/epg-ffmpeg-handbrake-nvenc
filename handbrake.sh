@@ -1,15 +1,18 @@
 #!/bin/bash
 
-file=${1:-1}
-ENCODE_OPT=${ENCODE_OPT_DEFAULT:-"-e nvenc_h264 -r 29.97 --pfr -E faac -B 160 -6 dpl2 -R Auto -D 0.0 -f mp4 --crop 0:0:0:0 --loose-anamorphic -m --decomb -x cabac=0:ref=2:me=umh:bframes=0:weightp=0:subme=6:8x8dct=0:trellis=0 -O --all-audio --all-subtitles"}
-KEEP_FILE=${KEEP_FILE_DEFAULT:-"1"}
-TARGET_EXT=${TARGET_EXT_DEFAULT:-"ISO|iso"}
-MAX_HEIGHT=${MAX_HEIGHT_DEFAULT:-"1280"}
-MAX_BITRATE=${MAX_BITRATE_DEFAULT:-"2000"}
-DEST_EXT=${DEST_EXT_DEFAULT:-"mp4"}
-MTIME=${MTIME_DEFAULT:-"+3"}
-TARGET_DIR=${TARGET_DIR_DEFAULT:-"/data/dlna"}
-OUTPUT_DIR=${OUTPUT_DIR_DEFAULT:-"/data/dlna"}
+ENCODE_OPT=${ENCODE_OPT:-"-e nvenc_h264 -r 29.97 --pfr -E faac -B 160 -6 dpl2 -R Auto -D 0.0 -f mp4 --crop 0:0:0:0 --loose-anamorphic -m --decomb -x cabac=0:ref=2:me=umh:bframes=0:weightp=0:subme=6:8x8dct=0:trellis=0 -O --all-audio --all-subtitles"}
+KEEP_FILE=${KEEP_FILE:-"1"}
+TARGET_EXT=${TARGET_EXT:-"ISO|iso"}
+MAX_HEIGHT=${MAX_HEIGHT:-"720"}
+MAX_BITRATE=${MAX_BITRATE:-"3000"}
+DEST_EXT=${DEST_EXT:-"mp4"}
+MTIME=${MTIME:-"+3"}
+TARGET_DIR=${TARGET_DIR:-"/data/dlna"}
+OUTPUT_DIR=${OUTPUT_DIR:-"/data/dlna"}
+
+count=1
+
+while read -r file; do
 
  if [ -f "${file}" ]; then
   : 
@@ -57,3 +60,15 @@ OUTPUT_DIR=${OUTPUT_DIR_DEFAULT:-"/data/dlna"}
   echo "file is empty. deleted."
   rm -f "${destfile}"
  fi
+
+ count=$((count+1))
+
+ if [ $count -gt 3 ]; then
+  echo "encode finished!!!!"
+  exit 0
+ fi
+
+ continue
+
+done <<< "$(find ${TARGET_DIR} -type f -mtime "$MTIME" -regextype posix-egrep -regex "^.*?($TARGET_EXT)$")"
+
