@@ -27,7 +27,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 COPY --from=l3tnun/epgstation:master-debian /app /app/
 COPY --from=l3tnun/epgstation:master-debian /app/client /app/client/
 COPY --from=handbrake /tmp/HandBrake/build/ /usr/local/bin/
-COPY config/ /app/config
+#COPY config/ /app/config
 RUN chmod 444 /app/src -R
 
 RUN mkdir -p /script
